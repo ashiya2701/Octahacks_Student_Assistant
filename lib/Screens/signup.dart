@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_assistant_app/Screens/signup.dart';
+import 'package:student_assistant_app/Screens/details.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  bool _rememberMe = false;
+class _SignUpScreenState extends State<SignUpScreen> {
+
 
   Widget _buildEmailTF() {
     return Column(
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Password',
+          'Set up you Password',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -81,57 +81,23 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        style:TextButton.styleFrom(
-          padding: EdgeInsets.only(right: 0.0),
-        ),
 
-        child: Text(
-          'Forgot Password?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      height: 20.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.green,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value!;
-                });
-              },
-            ),
-          ),
-          Text(
-            'Remember me',
-            style: kLabelStyle,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn() {
+  Widget _buildSignUpBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
 
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Details();
+              },
+            ),
+          );
+        },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
           padding: EdgeInsets.all(15.0),
@@ -143,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
 
         child: Text(
-          'LOGIN',
+          'Sign Up',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -168,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 20.0),
         Text(
-          'Sign in with',
+          'Sign Up with',
           style: kLabelStyle,
         ),
       ],
@@ -200,43 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return SignUpScreen();
-            },
-          ),
-        );
-      },
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Don\'t have an Account? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Sign Up',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
   Widget _buildSocialBtnRow() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -244,11 +173,11 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-                () => print('Login with Google'),
+                () => print('Sign Up with Google'),
             AssetImage(
-            'assets/logos/google.png',
+              'assets/logos/google.png',
 
-          ),
+            ),
           ),
         ],
       ),
@@ -307,12 +236,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 30.0,
                       ),
                       _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
+                      //_buildForgotPasswordBtn(),
+                      //_buildRememberMeCheckbox(),
+                      _buildSignUpBtn(),
                       _buildSignInWithText(),
-                     _buildSocialBtnRow(),
-                      _buildSignupBtn(),
+                      _buildSocialBtnRow(),
+                     // _buildSignupBtn(),
                     ],
                   ),
                 ),
