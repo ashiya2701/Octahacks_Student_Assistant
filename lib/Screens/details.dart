@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_assistant_app/Screens/careers.dart';
 import 'package:student_assistant_app/Screens/datepicker.dart';
+import 'package:student_assistant_app/Screens/skillwidget.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 
 class Details extends StatefulWidget {
@@ -100,6 +101,8 @@ class _DetailsState extends State<Details> {
                       GradYear(),
                       SizedBox(height: 30.0),
                       Careers(),
+                      SizedBox(height: 30.0),
+                      MultiSelectDropDownScreen(),
                     ],
                   ),
                 ),
