@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/Screens/signup.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 
@@ -10,7 +12,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
-
+  TextEditingController _email=TextEditingController();
+  TextEditingController _pass=TextEditingController();
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _email,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -60,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _pass,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -131,14 +136,23 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: ElevatedButton(
 
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () {
+          FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: _email.text,
+              password: _pass.text).then((value) {
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context)=>HomeScreen()));
+          }).onError((error, stackTrace){
+            print("Error ${error.toString()} ");
+          });
+        },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
           padding: EdgeInsets.all(15.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          primary: Colors.white,
+          backgroundColor: Colors.white,
 
         ),
 

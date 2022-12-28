@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_assistant_app/Screens/careers.dart';
 import 'package:student_assistant_app/Screens/datepicker.dart';
+import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/Screens/skillwidget.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 
@@ -45,7 +46,44 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-  @override
+  Widget _buildSubmitButton(){
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: ElevatedButton(
+
+        onPressed: (){
+          print('submit Button Pressed');
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context)=>HomeScreen())
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 5.0,
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          backgroundColor: Colors.white,
+
+        ),
+
+        child: Text(
+          'SUBMIT',
+          style: TextStyle(
+            color: Color(0xFF527DAA),
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+      ),
+    );
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -103,6 +141,9 @@ class _DetailsState extends State<Details> {
                       Careers(),
                       SizedBox(height: 30.0),
                       MultiSelectDropDownScreen(),
+                      SizedBox(height: 30.0),
+                      _buildSubmitButton()
+
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_assistant_app/Screens/details.dart';
@@ -10,6 +11,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
+  TextEditingController _emailtextcontroller = TextEditingController();
+  TextEditingController _passwordtextcontroller = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -25,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _emailtextcontroller,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -60,6 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _passwordtextcontroller,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -89,14 +94,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: ElevatedButton(
 
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
+          FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: _emailtextcontroller.text,
+              password: _passwordtextcontroller.text).then((value){
+                print("Created new account");
+                Navigator.push(context,
+                MaterialPageRoute(
+                builder: (context) {
                 return Details();
-              },
-            ),
-          );
+                },
+                ),
+               );
+              }).onError((error, stackTrace) {
+                print("Error ${error.toString()}");
+          });
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
@@ -104,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          primary: Colors.white,
+          backgroundColor: Colors.white,
 
         ),
 
@@ -241,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _buildSignUpBtn(),
                       _buildSignInWithText(),
                       _buildSocialBtnRow(),
-                     // _buildSignupBtn(),
+                      // _buildSignupBtn(),
                     ],
                   ),
                 ),
