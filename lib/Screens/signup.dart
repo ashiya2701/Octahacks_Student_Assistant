@@ -10,7 +10,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   TextEditingController _emailtextcontroller = TextEditingController();
   TextEditingController _passwordtextcontroller = TextEditingController();
 
@@ -86,27 +85,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
   Widget _buildSignUpBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-
         onPressed: () {
-          FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: _emailtextcontroller.text,
-              password: _passwordtextcontroller.text).then((value){
-                print("Created new account");
-                Navigator.push(context,
-                MaterialPageRoute(
+          FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                  email: _emailtextcontroller.text,
+                  password: _passwordtextcontroller.text)
+              .then((value) {
+            print("Created new account");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
                 builder: (context) {
-                return Details();
+                  return Details();
                 },
-                ),
-               );
-              }).onError((error, stackTrace) {
-                print("Error ${error.toString()}");
+              ),
+            );
+          }).onError((error, stackTrace) {
+            print("Error ${error.toString()}");
           });
         },
         style: ElevatedButton.styleFrom(
@@ -116,9 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           backgroundColor: Colors.white,
-
         ),
-
         child: Text(
           'Sign Up',
           style: TextStyle(
@@ -184,10 +182,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-                () => print('Sign Up with Google'),
+            () => print('Sign Up with Google'),
             AssetImage(
               'assets/logos/google.png',
-
             ),
           ),
         ],

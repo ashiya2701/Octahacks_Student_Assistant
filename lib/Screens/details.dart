@@ -14,7 +14,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
- // String xx = "";
+  // String xx = "";
 
   Widget _buildTF(String x, String y) {
     return Column(
@@ -46,18 +46,16 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-  Widget _buildSubmitButton(){
+
+  Widget _buildSubmitButton() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-
-        onPressed: (){
+        onPressed: () {
           print('submit Button Pressed');
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context)=>HomeScreen())
-          );
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
@@ -66,9 +64,7 @@ class _DetailsState extends State<Details> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           backgroundColor: Colors.white,
-
         ),
-
         child: Text(
           'SUBMIT',
           style: TextStyle(
@@ -83,7 +79,7 @@ class _DetailsState extends State<Details> {
     );
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -143,7 +139,6 @@ class _DetailsState extends State<Details> {
                       MultiSelectDropDownScreen(),
                       SizedBox(height: 30.0),
                       _buildSubmitButton()
-
                     ],
                   ),
                 ),
