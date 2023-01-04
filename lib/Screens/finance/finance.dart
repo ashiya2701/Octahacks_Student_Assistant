@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/widgets/balancewidget.dart';
+import 'package:student_assistant_app/Screens/finance/widgets/chart.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transactionlist.dart';
 import './widgets/user_transaction.dart';
-
+import './widgets/chart.dart';
 import 'package:intl/intl.dart';
 
-///\
+///
 
 import 'models/transaction.dart';
 
@@ -19,10 +20,37 @@ class FinanceScreen extends StatefulWidget {
 
 class _FinanceScreenState extends State<FinanceScreen> {
   final List<Transaction> _userTransactions = [
-    Transaction(id: '43', title: 'Shoes', amount: 69, date: DateTime.now()),
     Transaction(
-        id: '12', title: 'Controller', amount: 329, date: DateTime.now()),
+      id: '1', 
+      title: 'Shoes', 
+      amount: 69, 
+      date: DateTime.now()),
+    Transaction(
+        id: '2', 
+        title: 'Controller', 
+        amount: 329, 
+        date: DateTime.now()),
+      Transaction(
+        id: '3', 
+        title: 'Jacket', 
+        amount: 480, 
+        date: DateTime.now()),
+      Transaction(
+        id: '4', 
+        title: 'Gloves', 
+        amount: 200, 
+        date: DateTime.now()),     
   ];
+
+  List<Transaction> get _recentTransactions{
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+          ),
+          );
+    }).toList();
+  }
 
   double _currentBalance = 1500;
 
@@ -66,6 +94,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BalanceWidget(_currentBalance, increaseBalance),
+            Chart(_recentTransactions),
             TransactionList(_userTransactions)
           ],
         ),
