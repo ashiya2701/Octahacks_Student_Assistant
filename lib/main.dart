@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -22,6 +23,13 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Login UI',
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
+      routes: {
+        '/homepage': (ctx) => HomeScreen(),
+        '/login': (ctx) => LoginScreen(),
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (ctx) => HomeScreen());
+      },
     );
   }
 }

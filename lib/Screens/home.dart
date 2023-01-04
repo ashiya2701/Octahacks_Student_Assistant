@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:student_assistant_app/Screens/finance/finance.dart';
 import 'package:student_assistant_app/Screens/login.dart';
+import 'package:student_assistant_app/Screens/maindrawer.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -9,23 +12,57 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Widget> _sections = [
+    FinanceScreen(),
+    Center(
+      child: Text('Calendar'),
+    ),
+    Center(child: Text('jobs')),
+  ];
+
+  int _selectedSectionIndex = 0;
+
+  void _selectSection(int index) {
+    setState(() {
+      _selectedSectionIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          child: Text("Logout") ,
-          onPressed: (){
-            FirebaseAuth.instance.signOut().then((value) {
-              print("Signed Out");
-              Navigator.push(
+      appBar: AppBar(
+        title: Text('Student Assistant'),
+        actions: [
+          ElevatedButton(
+            child: Text("Logout"),
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Signed Out");
+                Navigator.popUntil(
                   context,
-                  MaterialPageRoute(builder: (context)=>LoginScreen())
-              );
-            });
-
-          },
-        ),
+                  ModalRoute.withName('/login'),
+                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              });
+            },
+          ),
+        ],
+      ),
+      body: _sections[_selectedSectionIndex],
+      drawer: MainDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        currentIndex: _selectedSectionIndex,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Expenses'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month), label: 'Schedule'),
+          BottomNavigationBarItem(icon: Icon(Icons.laptop), label: 'Jobs'),
+        ],
+        selectedItemColor: Theme.of(context).selectedRowColor,
+        onTap: _selectSection,
       ),
     );
   }

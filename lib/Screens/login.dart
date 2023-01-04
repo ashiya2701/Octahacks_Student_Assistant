@@ -12,8 +12,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
-  TextEditingController _email=TextEditingController();
-  TextEditingController _pass=TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _pass = TextEditingController();
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,10 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () => print('Forgot Password Button Pressed'),
-        style:TextButton.styleFrom(
+        style: TextButton.styleFrom(
           padding: EdgeInsets.only(right: 0.0),
         ),
-
         child: Text(
           'Forgot Password?',
           style: kLabelStyle,
@@ -135,14 +134,13 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-
         onPressed: () {
-          FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: _email.text,
-              password: _pass.text).then((value) {
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context)=>HomeScreen()));
-          }).onError((error, stackTrace){
+          FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+                  email: _email.text, password: _pass.text)
+              .then((value) {
+            Navigator.pushReplacementNamed(context, '/homepage');
+          }).onError((error, stackTrace) {
             print("Error ${error.toString()} ");
           });
         },
@@ -153,9 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(30.0),
           ),
           backgroundColor: Colors.white,
-
         ),
-
         child: Text(
           'LOGIN',
           style: TextStyle(
@@ -214,7 +210,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   Widget _buildSignupBtn() {
     return GestureDetector(
       onTap: () {
@@ -251,6 +246,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
   Widget _buildSocialBtnRow() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
@@ -258,11 +254,10 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildSocialBtn(
-                () => print('Login with Google'),
+            () => print('Login with Google'),
             AssetImage(
-            'assets/logos/google.png',
-
-          ),
+              'assets/logos/google.png',
+            ),
           ),
         ],
       ),
@@ -325,7 +320,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
                       _buildSignInWithText(),
-                     _buildSocialBtnRow(),
+                      _buildSocialBtnRow(),
                       _buildSignupBtn(),
                     ],
                   ),
