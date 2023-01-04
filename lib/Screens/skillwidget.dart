@@ -34,7 +34,7 @@ class _MultiSelectDropDownScreenState extends State<MultiSelectDropDownScreen> {
           Container(
             alignment: Alignment.centerLeft,
             decoration: kBoxDecorationStyle,
-           // height: 170.0,
+            // height: 170.0,
             child: GetBuilder<AppDataController>(
               builder: (controller) {
                 return Padding(
@@ -84,4 +84,3 @@ class _MultiSelectDropDownScreenState extends State<MultiSelectDropDownScreen> {
 
 
 }
-
