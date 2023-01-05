@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/widgets/balancewidget.dart';
 import 'package:student_assistant_app/Screens/finance/widgets/chart.dart';
+import 'package:student_assistant_app/Screens/finance/widgets/pie_chart.dart';
 import './widgets/new_transaction.dart';
 import './widgets/transactionlist.dart';
 import './widgets/user_transaction.dart';
@@ -100,6 +101,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
           children: [
             BalanceWidget(_currentBalance, increaseBalance),
             Chart(_recentTransactions),
+            PieChartWidget(_userTransactions),
             TransactionList(_userTransactions)
           ],
         ),
