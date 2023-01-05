@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var _currentUser;
   bool _rememberMe = false;
   TextEditingController _email = TextEditingController();
   TextEditingController _pass = TextEditingController();
@@ -129,6 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  
+
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -139,7 +143,20 @@ class _LoginScreenState extends State<LoginScreen> {
               .signInWithEmailAndPassword(
                   email: _email.text, password: _pass.text)
               .then((value) {
-            Navigator.pushReplacementNamed(context, '/homepage');
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .get()
+                .then((DocumentSnapshot doc) {
+              if (doc.exists) {
+                _currentUser = doc.data();
+                Navigator.pushReplacementNamed(context, '/homepage',
+                    arguments: _currentUser);
+                print(_currentUser);
+              } else {
+                print('Document does not exist on the database');
+              }
+            });
           }).onError((error, stackTrace) {
             print("Error ${error.toString()} ");
           });

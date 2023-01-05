@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
 
-  
+  final _currentUser;
+  MainDrawer(this._currentUser);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class MainDrawer extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(20),
           alignment: Alignment.centerLeft,
-          child: Text('Hello, ${auth.currentUser?.uid}'),
+          child: Text('Hello, ${_currentUser['Name']}'),
         ),
         SizedBox(
           height: 20,

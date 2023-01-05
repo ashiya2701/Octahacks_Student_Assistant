@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_assistant_app/Screens/home.dart';
@@ -13,12 +14,12 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference Users = FirebaseFirestore.instance.collection('users');
   TextEditingController _date = TextEditingController();
-  TextEditingController _name=TextEditingController();
-  TextEditingController _college=TextEditingController();
-  TextEditingController _cgpa=TextEditingController();
-  TextEditingController _branch=TextEditingController();
+  TextEditingController _name = TextEditingController();
+  TextEditingController _college = TextEditingController();
+  TextEditingController _cgpa = TextEditingController();
+  TextEditingController _branch = TextEditingController();
 
   String dropdownvalue = 'Item 1';
 
@@ -162,7 +163,10 @@ class _DetailsState extends State<Details> {
           print(_branch.text);
           print(_date.text);
           print(double.parse(_cgpa.text));
-          await Users.add({
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .update({
             "Name": _name.text,
             "CGPA": double.parse(_cgpa.text),
             "Careers": dropdownvalue,
@@ -170,9 +174,24 @@ class _DetailsState extends State<Details> {
             "Major": _branch.text,
             "Gradyear": _date.text,
             "Skills": ["C++", "Java"],
-          }).then((value) => print("Uers data added"));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          }).then((value) {
+            print("Uers data added");
+            var _currentUser;
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .get()
+                .then((DocumentSnapshot doc) {
+              if (doc.exists) {
+                _currentUser = doc.data();
+                Navigator.pushReplacementNamed(context, '/homepage',
+                    arguments: _currentUser);
+                print(_currentUser);
+              } else {
+                print('Document does not exist on the database');
+              }
+            });
+          });
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,

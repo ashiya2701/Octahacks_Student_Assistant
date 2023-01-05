@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
@@ -30,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var _currentUser = ModalRoute.of(context)!.settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Student Assistant'),
@@ -51,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: _sections[_selectedSectionIndex],
-      drawer: MainDrawer(),
+      drawer: MainDrawer(_currentUser),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         currentIndex: _selectedSectionIndex,

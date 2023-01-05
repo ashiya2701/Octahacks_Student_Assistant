@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,6 +98,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   password: _passwordtextcontroller.text)
               .then((value) {
             print("Created new account");
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .set({})
+                .then((value) => print(
+                    'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
+                .catchError((error) => print(error));
             Navigator.push(
               context,
               MaterialPageRoute(
