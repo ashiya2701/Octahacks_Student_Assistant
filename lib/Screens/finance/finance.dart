@@ -21,45 +21,50 @@ class FinanceScreen extends StatefulWidget {
 class _FinanceScreenState extends State<FinanceScreen> {
   final List<Transaction> _userTransactions = [
     Transaction(
-      id: '1', 
-      title: 'Shoes', 
-      amount: 69, 
-      date: DateTime.now()),
+        id: '1',
+        title: 'Shoes',
+        amount: 69,
+        date: DateTime.now(),
+        category: TransCategory.apparel),
     Transaction(
-        id: '2', 
-        title: 'Controller', 
-        amount: 329, 
-        date: DateTime.now()),
-      Transaction(
-        id: '3', 
-        title: 'Jacket', 
-        amount: 480, 
-        date: DateTime.now()),
-      Transaction(
-        id: '4', 
-        title: 'Gloves', 
-        amount: 200, 
-        date: DateTime.now()),     
+        id: '2',
+        title: 'Controller',
+        amount: 329,
+        date: DateTime.now(),
+        category: TransCategory.entertainment),
+    Transaction(
+        id: '3',
+        title: 'Jacket',
+        amount: 480,
+        date: DateTime.now(),
+        category: TransCategory.apparel),
+    Transaction(
+        id: '4',
+        title: 'Gloves',
+        amount: 200,
+        date: DateTime.now(),
+        category: TransCategory.apparel),
   ];
 
-  List<Transaction> get _recentTransactions{
+  List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
           Duration(days: 7),
-          ),
-          );
+        ),
+      );
     }).toList();
   }
 
   double _currentBalance = 1500;
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, TransCategory category) {
     final newTx = Transaction(
         title: title,
         amount: amount,
         date: DateTime.now(),
-        id: DateTime.now().toString());
+        id: DateTime.now().toString(),
+        category: category);
     setState(() {
       _userTransactions.add(newTx);
       _currentBalance -= amount;

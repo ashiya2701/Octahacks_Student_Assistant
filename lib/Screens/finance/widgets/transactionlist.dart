@@ -38,7 +38,8 @@ class TransactionList extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    Text(DateFormat.yMMMMd().format(transactions[index].date))
+                    Text(DateFormat.yMMMMd().format(transactions[index].date)),
+                    Text(transactions[index].category.toString().split('.')[1]),
                   ],
                 )
               ],
