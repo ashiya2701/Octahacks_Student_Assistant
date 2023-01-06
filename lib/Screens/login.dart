@@ -131,8 +131,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  
-
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),

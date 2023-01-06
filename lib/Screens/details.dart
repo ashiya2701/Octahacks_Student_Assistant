@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:student_assistant_app/Controller/skills.dart';
 import 'package:student_assistant_app/utilities/Skill.dart';
+
 class Details extends StatefulWidget {
   const Details({Key? key}) : super(key: key);
 
@@ -165,9 +165,9 @@ class _DetailsState extends State<Details> {
           print(_branch.text);
           print(int.parse(_date.text));
           print(double.parse(_cgpa.text));
-         // print("here");
-         List<String> skills=[];
-          for(var i=0;i<skillData.length;i++){
+          // print("here");
+          List<String> skills = [];
+          for (var i = 0; i < skillData.length; i++) {
             print(skillData[i].skillname);
             skills.add(skillData[i].skillname);
             print(skills[i]);
@@ -201,8 +201,6 @@ class _DetailsState extends State<Details> {
               }
             });
           });
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
@@ -225,8 +223,9 @@ class _DetailsState extends State<Details> {
       ),
     );
   }
-  List<SkillModel>skillData = [];
-  Widget _buildMultiSelect(){
+
+  List<SkillModel> skillData = [];
+  Widget _buildMultiSelect() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -290,9 +289,7 @@ class _DetailsState extends State<Details> {
   final AppDataController controller = Get.put(AppDataController());
 
   @override
-
   Widget build(BuildContext context) {
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.getSkillData();
     });

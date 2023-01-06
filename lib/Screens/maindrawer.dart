@@ -17,7 +17,7 @@ class MainDrawer extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(20),
           alignment: Alignment.centerLeft,
-          child: Text('Hello, ${_currentUser['Name']}'),
+          child: Text('Hello, ${_currentUser?['Name']}'),
         ),
         SizedBox(
           height: 20,
