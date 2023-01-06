@@ -14,7 +14,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  CollectionReference Users = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   TextEditingController _date = TextEditingController();
   TextEditingController _name = TextEditingController();
   TextEditingController _college = TextEditingController();
@@ -161,7 +161,7 @@ class _DetailsState extends State<Details> {
           print(_college.text);
           print(dropdownvalue);
           print(_branch.text);
-          print(_date.text);
+          print(int.parse(_date.text));
           print(double.parse(_cgpa.text));
           await FirebaseFirestore.instance
               .collection('users')
@@ -172,7 +172,7 @@ class _DetailsState extends State<Details> {
             "Careers": dropdownvalue,
             "College": _college.text,
             "Major": _branch.text,
-            "Gradyear": _date.text,
+            "Gradyear": int.parse(_date.text),
             "Skills": ["C++", "Java"],
           }).then((value) {
             print("Uers data added");
@@ -192,6 +192,8 @@ class _DetailsState extends State<Details> {
               }
             });
           });
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
