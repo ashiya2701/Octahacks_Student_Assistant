@@ -9,7 +9,10 @@ import 'package:student_assistant_app/Controller/skills.dart';
 import 'package:student_assistant_app/utilities/Skill.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key? key}) : super(key: key);
+  final String _email;
+  final String _password;
+
+  Details(this._email, this._password);
 
   @override
   State<Details> createState() => _DetailsState();
@@ -159,6 +162,21 @@ class _DetailsState extends State<Details> {
       child: ElevatedButton(
         onPressed: () async {
           print('submit Button Pressed');
+          FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                  email: widget._email, password: widget._password)
+              .then((value) {
+            print("Created new account");
+            FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .set({})
+                .then((value) => print(
+                    'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
+                .catchError((error) => print(error));
+          }).onError((error, stackTrace) {
+            print("Error ${error.toString()}");
+          });
           print(_name.text);
           print(_college.text);
           print(dropdownvalue);
@@ -172,6 +190,7 @@ class _DetailsState extends State<Details> {
             skills.add(skillData[i].skillname);
             print(skills[i]);
           }
+
           await FirebaseFirestore.instance
               .collection('users')
               .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -193,6 +212,8 @@ class _DetailsState extends State<Details> {
                 .then((DocumentSnapshot doc) {
               if (doc.exists) {
                 _currentUser = doc.data();
+                Navigator.pop(context);
+                Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/homepage',
                     arguments: _currentUser);
                 print(_currentUser);

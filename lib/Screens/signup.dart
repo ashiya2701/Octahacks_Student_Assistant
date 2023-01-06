@@ -92,30 +92,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                  email: _emailtextcontroller.text,
-                  password: _passwordtextcontroller.text)
-              .then((value) {
-            print("Created new account");
-            FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser?.uid)
-                .set({})
-                .then((value) => print(
-                    'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
-                .catchError((error) => print(error));
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return Details();
-                },
-              ),
-            );
-          }).onError((error, stackTrace) {
-            print("Error ${error.toString()}");
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return Details(
+                    _emailtextcontroller.text, _passwordtextcontroller.text);
+              },
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
