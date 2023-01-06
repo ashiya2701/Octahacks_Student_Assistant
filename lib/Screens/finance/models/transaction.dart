@@ -26,6 +26,11 @@ enum TransCategory {
   others,
 }
 
+extension InvertMap<K, V> on Map<K, V> {
+  Map<V, K> get inverse =>
+      Map.fromEntries(entries.map((e) => MapEntry(e.value, e.key)));
+}
+
 final Map<String, TransCategory> categories = {
   'Fees': TransCategory.fees,
   'Education': TransCategory.education,
@@ -35,3 +40,5 @@ final Map<String, TransCategory> categories = {
   'Entertainment': TransCategory.entertainment,
   'Others': TransCategory.others,
 };
+
+final Map<TransCategory, String> inverseCategories = categories.inverse;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 import 'package:student_assistant_app/Screens/maindrawer.dart';
+import 'finance/models/transaction.dart' as Trans;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,14 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _sections = [
-    FinanceScreen(),
-    Center(
-      child: Text('Calendar'),
-    ),
-    Center(child: Text('jobs')),
-  ];
-
   int _selectedSectionIndex = 0;
 
   void _selectSection(int index) {
@@ -31,7 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _currentUser = ModalRoute.of(context)!.settings.arguments;
+    var args = ModalRoute.of(context)!.settings.arguments as List;
+    var _currentUser = args[0];
+    List<Trans.Transaction> _userTransactions = args[1];
+    final List<Widget> _sections = [
+      FinanceScreen(_userTransactions),
+      Center(
+        child: Text('Calendar'),
+      ),
+      Center(child: Text('jobs')),
+    ];
 
     return Scaffold(
       appBar: AppBar(

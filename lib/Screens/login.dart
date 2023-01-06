@@ -6,6 +6,9 @@ import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/Screens/signup.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 
+import 'finance/models/transaction.dart' as Trans;
+import 'finance/models/transaction.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -148,9 +151,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 .then((DocumentSnapshot doc) {
               if (doc.exists) {
                 _currentUser = doc.data();
-                Navigator.pushReplacementNamed(context, '/homepage',
-                    arguments: _currentUser);
-                print(_currentUser);
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                    .collection('transactions')
+                    .get()
+                    .then((QuerySnapshot qs) {
+                  List<Trans.Transaction> _userTransactions = [];
+                  qs.docs.forEach((doc) {
+                    _userTransactions.add(Trans.Transaction(
+                        amount: doc['amount'],
+                        category: categories[doc['category']] as TransCategory,
+                        date: (doc['date'] as Timestamp).toDate(),
+                        id: doc.id,
+                        title: doc['title']));
+                  });
+                  Navigator.pushReplacementNamed(context, '/homepage',
+                      arguments: [_currentUser, _userTransactions]);
+                  print(_currentUser);
+                  print(_userTransactions);
+                });
               } else {
                 print('Document does not exist on the database');
               }
