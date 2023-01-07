@@ -2,11 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:student_assistant_app/Controller/skills.dart';
 import 'package:student_assistant_app/utilities/Skill.dart';
+
+import 'finance/models/transaction.dart' as Trans;
+import 'finance/models/transaction.dart';
 
 class Details extends StatefulWidget {
   final String _email;
@@ -213,11 +217,24 @@ class _DetailsState extends State<Details> {
                 .then((DocumentSnapshot doc) {
               if (doc.exists) {
                 _currentUser = doc.data();
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/homepage',
-                    arguments: _currentUser);
-                print(_currentUser);
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                    .collection('transactions')
+                    .get()
+                    .then((QuerySnapshot qs) {
+                  List<Trans.Transaction> _userTransactions = [];
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (coontext) => HomeScreen(
+                              currentUser: _currentUser,
+                              userTransactions: _userTransactions)));
+                  print(_currentUser);
+                  print(_userTransactions);
+                });
               } else {
                 print('Document does not exist on the database');
               }
