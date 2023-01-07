@@ -149,6 +149,23 @@ class _FinanceScreenState extends State<FinanceScreen>
     });
   }
 
+  void _deleteTransaction(String id) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection('transactions')
+        .doc(id)
+        .delete()
+        .then((value) {
+      setState(() {
+        widget._userTransactions.removeWhere((item) {
+          return item.id == id;
+        });
+        widget._updateTransactionList(widget._userTransactions);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -162,7 +179,7 @@ class _FinanceScreenState extends State<FinanceScreen>
             BalanceWidget(widget._currentBalance, increaseBalance),
             Chart(_recentTransactions),
             PieChartWidget(widget._userTransactions),
-            TransactionList(widget._userTransactions)
+            TransactionList(widget._userTransactions, _deleteTransaction),
           ],
         ),
       ),
