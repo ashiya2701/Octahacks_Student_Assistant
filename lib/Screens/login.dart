@@ -166,8 +166,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         id: doc.id,
                         title: doc['title']));
                   });
-                  Navigator.pushReplacementNamed(context, '/homepage',
-                      arguments: [_currentUser, _userTransactions]);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (coontext) => HomeScreen(
+                              currentUser: _currentUser,
+                              userTransactions: _userTransactions)));
                   print(_currentUser);
                   print(_userTransactions);
                 });

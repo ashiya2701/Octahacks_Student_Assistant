@@ -202,6 +202,7 @@ class _DetailsState extends State<Details> {
             "Major": _branch.text,
             "Gradyear": int.parse(_date.text),
             "Skills": skills,
+            "Balance": double.parse('0')
           }).then((value) {
             print("Uers data added");
             var _currentUser;

@@ -19,31 +19,21 @@ import 'models/transaction.dart' as Trans;
 
 class FinanceScreen extends StatefulWidget {
   List<Trans.Transaction> _userTransactions = [];
+  double _currentBalance = 0;
+  final Function _updateCurrentUserBalance;
+  final Function _updateTransactionList;
 
-  FinanceScreen(this._userTransactions) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('transactions')
-        .get()
-        .then((QuerySnapshot qs) {
-      qs.docs.forEach((doc) {
-        _userTransactions = [];
-        _userTransactions.add(Trans.Transaction(
-            amount: doc['amount'],
-            category: categories[doc['category']] as TransCategory,
-            date: (doc['date'] as Timestamp).toDate(),
-            id: doc.id,
-            title: doc['title']));
-      });
-    });
+  FinanceScreen(this._userTransactions, _currentUser,
+      this._updateCurrentUserBalance, this._updateTransactionList) {
+    _currentBalance = _currentUser["Balance"];
   }
 
   @override
   State<FinanceScreen> createState() => _FinanceScreenState();
 }
 
-class _FinanceScreenState extends State<FinanceScreen> {
+class _FinanceScreenState extends State<FinanceScreen>
+    with AutomaticKeepAliveClientMixin<FinanceScreen> {
   // [
   //   Transaction(
   //       id: '1',
@@ -81,8 +71,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
     }).toList();
   }
 
-  double _currentBalance = 1500;
-
   void _addNewTransaction(
       String title, double amount, Trans.TransCategory category) {
     // final newTx = Trans.Transaction(
@@ -101,28 +89,38 @@ class _FinanceScreenState extends State<FinanceScreen> {
       'amount': amount,
       'date': Timestamp.fromDate(DateTime.now()),
       'category': inverseCategories[category]
-    });
+    }).then((value) {
+      List<Trans.Transaction> tx = [];
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('transactions')
+          .get()
+          .then((QuerySnapshot qs) {
+        qs.docs.forEach((doc) {
+          tx.add(Trans.Transaction(
+              amount: doc['amount'],
+              category: categories[doc['category']] as TransCategory,
+              date: (doc['date'] as Timestamp).toDate(),
+              id: doc.id,
+              title: doc['title']));
+          print(tx);
+        });
 
-    List<Trans.Transaction> tx = [];
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('transactions')
-        .get()
-        .then((QuerySnapshot qs) {
-      qs.docs.forEach((doc) {
-        tx.add(Trans.Transaction(
-            amount: doc['amount'],
-            category: categories[doc['category']] as TransCategory,
-            date: (doc['date'] as Timestamp).toDate(),
-            id: doc.id,
-            title: doc['title']));
-        print(tx);
-      });
-      setState(() {
-        widget._userTransactions = tx;
+        setState(() {
+          widget._updateTransactionList(tx);
 
-        _currentBalance -= amount;
+          widget._userTransactions = tx;
+
+          widget._currentBalance -= amount;
+
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .update({"Balance": widget._currentBalance}).then((value) {
+            widget._updateCurrentUserBalance(widget._currentBalance);
+          });
+        });
       });
     });
   }
@@ -140,13 +138,20 @@ class _FinanceScreenState extends State<FinanceScreen> {
   }
 
   void increaseBalance(double amount) {
-    setState(() {
-      _currentBalance += amount;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update({'Balance': widget._currentBalance + amount}).then((value) {
+      setState(() {
+        widget._currentBalance += amount;
+        widget._updateCurrentUserBalance(widget._currentBalance);
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.3),
       body: SingleChildScrollView(
@@ -154,7 +159,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BalanceWidget(_currentBalance, increaseBalance),
+            BalanceWidget(widget._currentBalance, increaseBalance),
             Chart(_recentTransactions),
             PieChartWidget(widget._userTransactions),
             TransactionList(widget._userTransactions)
@@ -168,4 +173,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

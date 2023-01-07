@@ -2,12 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
+import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 import 'package:student_assistant_app/Screens/maindrawer.dart';
 import 'finance/models/transaction.dart' as Trans;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  List<Trans.Transaction> _userTransactions = [];
+  var _currentUser;
+
+  HomeScreen({Key? key, currentUser, userTransactions}) : super(key: key) {
+    _currentUser = currentUser;
+    _userTransactions = userTransactions;
+  }
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,13 +29,26 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _updateTransactionList(List<Trans.Transaction> l) {
+    setState(() {
+      widget._userTransactions = l;
+    });
+  }
+
+  void _updateCurrentUserBalance(double v) {
+    setState(() {
+      widget._currentUser["Balance"] = v;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context)!.settings.arguments as List;
-    var _currentUser = args[0];
-    List<Trans.Transaction> _userTransactions = args[1];
+    // var args = ModalRoute.of(context)!.settings.arguments as List;
+    // var _currentUser = args[0];
+    // List<Trans.Transaction> _userTransactions = args[1];
     final List<Widget> _sections = [
-      FinanceScreen(_userTransactions),
+      FinanceScreen(widget._userTransactions, widget._currentUser,
+          _updateCurrentUserBalance, _updateTransactionList),
       Center(
         child: Text('Calendar'),
       ),
@@ -56,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: _sections[_selectedSectionIndex],
-      drawer: MainDrawer(_currentUser),
+      drawer: MainDrawer(widget._currentUser),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         currentIndex: _selectedSectionIndex,

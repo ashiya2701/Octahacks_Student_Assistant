@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
       routes: {
-        '/homepage': (ctx) => HomeScreen(),
+        // '/homepage': (ctx) => HomeScreen(),
         '/login': (ctx) => LoginScreen(),
       },
       onUnknownRoute: (settings) {
