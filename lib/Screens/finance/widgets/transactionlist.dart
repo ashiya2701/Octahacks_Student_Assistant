@@ -53,6 +53,7 @@ class TransactionList extends StatelessWidget {
                   ],
                 ),
                 Container(
+                  color: Colors.white,
                   padding: EdgeInsets.only(right: 20),
                   child: GestureDetector(
                     child: ElevatedButton(
