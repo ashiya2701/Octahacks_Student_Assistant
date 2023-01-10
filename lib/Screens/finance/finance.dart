@@ -112,13 +112,13 @@ class _FinanceScreenState extends State<FinanceScreen>
 
           widget._userTransactions = tx;
 
-          widget._currentBalance -= amount;
-
           FirebaseFirestore.instance
               .collection('users')
               .doc(FirebaseAuth.instance.currentUser?.uid)
-              .update({"Balance": widget._currentBalance}).then((value) {
-            widget._updateCurrentUserBalance(widget._currentBalance);
+              .update({"Balance": widget._currentBalance - amount}).then(
+                  (value) {
+            widget._updateCurrentUserBalance(widget._currentBalance - amount);
+            widget._currentBalance -= amount;
           });
         });
       });
