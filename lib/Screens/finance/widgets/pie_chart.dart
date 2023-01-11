@@ -26,6 +26,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
       child: PieChart(
         dataMap: datamap,
         chartType: ChartType.disc,
+        chartValuesOptions: ChartValuesOptions(showChartValueBackground: true,),
       ),
     );
   }

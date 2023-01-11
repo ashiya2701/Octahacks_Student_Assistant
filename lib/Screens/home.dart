@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
 import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.dart';
+import 'package:student_assistant_app/Screens/jobs/jobs.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 import 'package:student_assistant_app/Screens/maindrawer.dart';
 import 'finance/models/transaction.dart' as Trans;
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Center(
         child: Text('Calendar'),
       ),
-      Center(child: Text('jobs')),
+      JobsScreen(widget._currentUser),
     ];
 
     return Scaffold(
