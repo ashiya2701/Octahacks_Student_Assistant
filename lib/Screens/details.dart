@@ -8,9 +8,7 @@ import 'package:get/get.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:student_assistant_app/Controller/skills.dart';
 import 'package:student_assistant_app/utilities/Skill.dart';
-
 import 'finance/models/transaction.dart' as Trans;
-import 'finance/models/transaction.dart';
 
 class Details extends StatefulWidget {
   final String _email;
@@ -23,6 +21,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   TextEditingController _date = TextEditingController();
   TextEditingController _name = TextEditingController();
@@ -98,6 +97,7 @@ class _DetailsState extends State<Details> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+
             controller: controller,
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -115,6 +115,8 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
+
+
 
   Widget _buildGradYear() {
     return Column(
@@ -158,14 +160,42 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
+  bool CGPAValidator(String s){
+    if (s == null) {
+      return false;
+    }
+    if(double.tryParse(s) == null)return false;
+    if(double.tryParse(s)!=null && (double.parse(s)<0 || double.parse(s)>10) )return false;
+    return true;
+  }
+  bool textValidator(String s){
+    if (s == null) {
+      return false;
+    }
+    return !(double.tryParse(s) != null);
+  }
 
+
+  bool pos=true;
+  bool error=false;
   Widget _buildSubmitButton() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: () async{
           print('submit Button Pressed');
+          if(_name.text.isEmpty || _college.text.isEmpty || dropdownvalue.isEmpty|| _branch.text.isEmpty
+              || _date.text.isEmpty || _cgpa.text.isEmpty || skillData.length==0 || CGPAValidator(_cgpa.text)==false ||
+          textValidator(_name.text)==false || textValidator(_college.text)==false || !textValidator(_branch.text)){
+            pos=false;
+          }
+          else pos=true;
+          print(pos);
+          if(pos) {
+            setState(() {
+              error=false;
+            });
           FirebaseAuth.instance
               .createUserWithEmailAndPassword(
                   email: widget._email, password: widget._password)
@@ -178,6 +208,7 @@ class _DetailsState extends State<Details> {
                 .then((value) => print(
                     'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
                 .catchError((error) => print(error));
+            print("Created new account again");
           }).onError((error, stackTrace) {
             print("Error ${error.toString()}");
           });
@@ -194,7 +225,8 @@ class _DetailsState extends State<Details> {
             skills.add(skillData[i].skillname);
             print(skills[i]);
           }
-
+          print('here');
+          print (pos);
           await FirebaseFirestore.instance
               .collection('users')
               .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -209,6 +241,7 @@ class _DetailsState extends State<Details> {
             "Balance": double.parse('0')
           }).then((value) {
             print("Uers data added");
+          //  pos=0;
             var _currentUser;
             FirebaseFirestore.instance
                 .collection('users')
@@ -229,7 +262,7 @@ class _DetailsState extends State<Details> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (coontext) => HomeScreen(
+                          builder: (context) => HomeScreen(
                               currentUser: _currentUser,
                               userTransactions: _userTransactions)));
                   print(_currentUser);
@@ -240,6 +273,13 @@ class _DetailsState extends State<Details> {
               }
             });
           });
+         }
+         else{
+           setState(() {
+             error=true;
+           });
+
+         }
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
@@ -392,7 +432,17 @@ class _DetailsState extends State<Details> {
                       SizedBox(height: 30.0),
                       _buildMultiSelect(),
                       SizedBox(height: 30.0),
-                      _buildSubmitButton()
+                      _buildSubmitButton(),
+                      SizedBox(height: 30.0),
+                      Visibility(
+                          visible: error,
+                          child: Text('Please fill all the details properly',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'OpenSans',)
+                          ),
+                      ),
                     ],
                   ),
                 ),
