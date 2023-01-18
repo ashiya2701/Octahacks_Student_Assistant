@@ -1,6 +1,10 @@
+import 'dart:html';
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -59,7 +63,8 @@ class TransactionList extends StatelessWidget {
                     child: ElevatedButton(
                       child: Icon(Icons.delete),
                       onPressed: () {
-                        _deleteTransaction(transactions[index].id);
+                       //_deleteTransaction(transactions[index].id);
+                       _showMyDialog(context);
                       },
                     ),
                   ),
@@ -73,4 +78,39 @@ class TransactionList extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text('This is a demo alert dialog.'),
+              Text('Would you like to confirm this message?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Confirm'),
+            onPressed: () {
+              print('Confirmed');
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
