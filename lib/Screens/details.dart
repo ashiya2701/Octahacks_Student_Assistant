@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:student_assistant_app/Screens/calender/models/task.dart';
 import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,6 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   TextEditingController _date = TextEditingController();
   TextEditingController _name = TextEditingController();
@@ -97,7 +97,6 @@ class _DetailsState extends State<Details> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-
             controller: controller,
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -115,8 +114,6 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-
-
 
   Widget _buildGradYear() {
     return Column(
@@ -160,126 +157,146 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-  bool CGPAValidator(String s){
+
+  bool CGPAValidator(String s) {
     if (s == null) {
       return false;
     }
-    if(double.tryParse(s) == null)return false;
-    if(double.tryParse(s)!=null && (double.parse(s)<0 || double.parse(s)>10) )return false;
+    if (double.tryParse(s) == null) return false;
+    if (double.tryParse(s) != null &&
+        (double.parse(s) < 0 || double.parse(s) > 10)) return false;
     return true;
   }
-  bool textValidator(String s){
+
+  bool textValidator(String s) {
     if (s == null) {
       return false;
     }
     return !(double.tryParse(s) != null);
   }
 
-
-  bool pos=true;
-  bool error=false;
+  bool pos = true;
+  bool error = false;
   Widget _buildSubmitButton() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () async{
+        onPressed: () async {
           print('submit Button Pressed');
-          if(_name.text.isEmpty || _college.text.isEmpty || dropdownvalue.isEmpty|| _branch.text.isEmpty
-              || _date.text.isEmpty || _cgpa.text.isEmpty || skillData.length==0 || CGPAValidator(_cgpa.text)==false ||
-          textValidator(_name.text)==false || textValidator(_college.text)==false || !textValidator(_branch.text)){
-            pos=false;
-          }
-          else pos=true;
+          if (_name.text.isEmpty ||
+              _college.text.isEmpty ||
+              dropdownvalue.isEmpty ||
+              _branch.text.isEmpty ||
+              _date.text.isEmpty ||
+              _cgpa.text.isEmpty ||
+              skillData.length == 0 ||
+              CGPAValidator(_cgpa.text) == false ||
+              textValidator(_name.text) == false ||
+              textValidator(_college.text) == false ||
+              !textValidator(_branch.text)) {
+            pos = false;
+          } else
+            pos = true;
           print(pos);
-          if(pos) {
+          if (pos) {
             setState(() {
-              error=false;
+              error = false;
             });
-          FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                  email: widget._email, password: widget._password)
-              .then((value) {
-            print("Created new account");
-            FirebaseFirestore.instance
+            FirebaseAuth.instance
+                .createUserWithEmailAndPassword(
+                    email: widget._email, password: widget._password)
+                .then((value) {
+              print("Created new account");
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .set({})
+                  .then((value) => print(
+                      'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
+                  .catchError((error) => print(error));
+              print("Created new account again");
+            }).onError((error, stackTrace) {
+              print("Error ${error.toString()}");
+            });
+            print(_name.text);
+            print(_college.text);
+            print(dropdownvalue);
+            print(_branch.text);
+            print(int.parse(_date.text));
+            print(double.parse(_cgpa.text));
+            // print("here");
+            List<String> skills = [];
+            for (var i = 0; i < skillData.length; i++) {
+              print(skillData[i].skillname);
+              skills.add(skillData[i].skillname);
+              print(skills[i]);
+            }
+            print('here');
+            print(pos);
+            await FirebaseFirestore.instance
                 .collection('users')
                 .doc(FirebaseAuth.instance.currentUser?.uid)
-                .set({})
-                .then((value) => print(
-                    'Created user ${FirebaseAuth.instance.currentUser?.uid}'))
-                .catchError((error) => print(error));
-            print("Created new account again");
-          }).onError((error, stackTrace) {
-            print("Error ${error.toString()}");
-          });
-          print(_name.text);
-          print(_college.text);
-          print(dropdownvalue);
-          print(_branch.text);
-          print(int.parse(_date.text));
-          print(double.parse(_cgpa.text));
-          // print("here");
-          List<String> skills = [];
-          for (var i = 0; i < skillData.length; i++) {
-            print(skillData[i].skillname);
-            skills.add(skillData[i].skillname);
-            print(skills[i]);
-          }
-          print('here');
-          print (pos);
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(FirebaseAuth.instance.currentUser?.uid)
-              .update({
-            "Name": _name.text,
-            "CGPA": double.parse(_cgpa.text),
-            "Careers": dropdownvalue,
-            "College": _college.text,
-            "Major": _branch.text,
-            "Gradyear": int.parse(_date.text),
-            "Skills": skills,
-            "Balance": double.parse('0')
-          }).then((value) {
-            print("Uers data added");
-          //  pos=0;
-            var _currentUser;
-            FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser?.uid)
-                .get()
-                .then((DocumentSnapshot doc) {
-              if (doc.exists) {
-                _currentUser = doc.data();
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.uid)
-                    .collection('transactions')
-                    .get()
-                    .then((QuerySnapshot qs) {
-                  List<Trans.Transaction> _userTransactions = [];
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                              currentUser: _currentUser,
-                              userTransactions: _userTransactions)));
-                  print(_currentUser);
-                  print(_userTransactions);
-                });
-              } else {
-                print('Document does not exist on the database');
-              }
-            });
-          });
-         }
-         else{
-           setState(() {
-             error=true;
-           });
+                .update({
+              "Name": _name.text,
+              "CGPA": double.parse(_cgpa.text),
+              "Careers": dropdownvalue,
+              "College": _college.text,
+              "Major": _branch.text,
+              "Gradyear": int.parse(_date.text),
+              "Skills": skills,
+              "Balance": double.parse('0')
+            }).then((value) {
+              print("Uers data added");
+              //  pos=0;
+              var _currentUser;
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .get()
+                  .then((DocumentSnapshot doc) {
+                if (doc.exists) {
+                  _currentUser = doc.data();
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                      .collection('transactions')
+                      .get()
+                      .then((QuerySnapshot qs) {
+                    List<Trans.Transaction> _userTransactions = [];
 
-         }
+                    FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                        .collection('tasks')
+                        .get()
+                        .then((QuerySnapshot qs) {
+                      List<Task> _userEvents = [];
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen(
+                                  currentUser: _currentUser,
+                                  userTransactions: _userTransactions,
+                                  userEvents:_userEvents)));
+                      print(_currentUser);
+                      print(_userTransactions);
+                      print(_userEvents);
+                    });
+                  });
+                } else {
+                  print('Document does not exist on the database');
+                }
+              });
+            });
+          } else {
+            setState(() {
+              error = true;
+            });
+          }
         },
         style: ElevatedButton.styleFrom(
           elevation: 5.0,
@@ -435,13 +452,13 @@ class _DetailsState extends State<Details> {
                       _buildSubmitButton(),
                       SizedBox(height: 30.0),
                       Visibility(
-                          visible: error,
-                          child: Text('Please fill all the details properly',
+                        visible: error,
+                        child: Text('Please fill all the details properly',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'OpenSans',)
-                          ),
+                              color: Colors.white,
+                              fontFamily: 'OpenSans',
+                            )),
                       ),
                     ],
                   ),
