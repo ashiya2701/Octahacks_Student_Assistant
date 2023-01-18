@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import "./UI/widgets/button.dart";
-import './UI/add_task_bar.dart';
 
 // Future<void> main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -101,8 +99,8 @@ class _CalenderState extends State<Calender> {
         ),
         MyButton(
             label: "+ Add Task",
-            onTap: () async {
-              await Get.to(AddTaskPage());
+            onTap: ()  {
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>AddTaskPage()) );
               _taskController.getTask();
             })
       ]),

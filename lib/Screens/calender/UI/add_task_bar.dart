@@ -4,7 +4,6 @@ import '../UI/widgets/input_field.dart';
 import '../controller/task_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../UI/widgets/input_field.dart';
 import 'package:intl/intl.dart';
 
 import '../models/task.dart';
@@ -222,7 +221,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   _validateData() {
     if (_titleController.text.isNotEmpty && _noteController.text.isNotEmpty) {
       _addTaskToDb();
-      Get.back();
+      Navigator.pop(context);
     } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
       Get.snackbar("Required", "All fields are required!",
           snackPosition: SnackPosition.BOTTOM,
@@ -256,7 +255,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       backgroundColor: context.theme.backgroundColor,
       leading: GestureDetector(
         onTap: () {
-          Get.back();
+          Navigator.pop(context);
         },
         child: Icon(
           Icons.arrow_back,
