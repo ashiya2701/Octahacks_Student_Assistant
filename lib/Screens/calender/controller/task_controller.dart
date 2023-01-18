@@ -1,4 +1,4 @@
-import 'package:calender/db/db.dart';
+import '../db/db.dart';
 import 'package:get/get.dart';
 
 import '../models/task.dart';

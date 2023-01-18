@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:calender/UI/theme.dart';
+import '../theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyButton extends StatelessWidget {

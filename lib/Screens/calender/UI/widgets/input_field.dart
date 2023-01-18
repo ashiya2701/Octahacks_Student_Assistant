@@ -1,4 +1,4 @@
-import 'package:calender/UI/theme.dart';
+import '../theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

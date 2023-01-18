@@ -1,10 +1,10 @@
-import 'package:calender/UI/theme.dart';
-import 'package:calender/UI/widgets/button.dart';
-import 'package:calender/UI/widgets/input_field.dart';
-import 'package:calender/controller/task_controller.dart';
+import '../UI/theme.dart';
+import '../UI/widgets/button.dart';
+import '../UI/widgets/input_field.dart';
+import '../controller/task_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:calender/UI/widgets/input_field.dart';
+import '../UI/widgets/input_field.dart';
 import 'package:intl/intl.dart';
 
 import '../models/task.dart';

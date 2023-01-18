@@ -1,17 +1,17 @@
-import 'package:calender/UI/add_task_bar.dart';
-import 'package:calender/UI/theme.dart';
-import 'package:calender/UI/widgets/button.dart';
-import 'package:calender/controller/task_controller.dart';
-import 'package:calender/services/notification_services.dart';
-import 'package:calender/services/theme_services.dart';
+import '../UI/add_task_bar.dart';
+import '../UI/theme.dart';
+import '../UI/widgets/button.dart';
+import '../controller/task_controller.dart';
+import '../services/notification_services.dart';
+import '../services/theme_services.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import "package:calender/UI/widgets/button.dart";
-import 'package:calender/UI/add_task_bar.dart';
+import "../UI/widgets/button.dart";
+import '../UI/add_task_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
