@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:student_assistant_app/Screens/calender/models/task.dart';
 import 'package:student_assistant_app/Screens/home.dart';
 import 'package:student_assistant_app/Screens/signup.dart';
 import 'package:student_assistant_app/utilities/constants.dart';
@@ -171,9 +172,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(
                           builder: (coontext) => HomeScreen(
                               currentUser: _currentUser,
-                              userTransactions: _userTransactions)));
+                              userTransactions: _userTransactions,
+                              userEvents: List<Task>)));
                   print(_currentUser);
                   print(_userTransactions);
+                  
                 });
               } else {
                 print('Document does not exist on the database');

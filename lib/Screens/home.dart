@@ -7,15 +7,19 @@ import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.d
 import 'package:student_assistant_app/Screens/jobs/jobs.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 import 'package:student_assistant_app/Screens/maindrawer.dart';
+import 'calender/models/task.dart';
 import 'finance/models/transaction.dart' as Trans;
 
 class HomeScreen extends StatefulWidget {
   List<Trans.Transaction> _userTransactions = [];
   var _currentUser;
+  List<Task> _userEvents = [];
 
-  HomeScreen({Key? key, currentUser, userTransactions}) : super(key: key) {
+  HomeScreen({Key? key, currentUser, userTransactions, userEvents})
+      : super(key: key) {
     _currentUser = currentUser;
     _userTransactions = userTransactions;
+    _userEvents = userEvents;
   }
 
   @override
