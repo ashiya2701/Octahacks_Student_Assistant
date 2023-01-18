@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:student_assistant_app/Screens/calender/calender.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
 import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.dart';
 import 'package:student_assistant_app/Screens/jobs/jobs.dart';
@@ -50,9 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<Widget> _sections = [
       FinanceScreen(widget._userTransactions, widget._currentUser,
           _updateCurrentUserBalance, _updateTransactionList),
-      Center(
-        child: Text('Calendar'),
-      ),
+      Calender(),
       JobsScreen(widget._currentUser),
     ];
 
