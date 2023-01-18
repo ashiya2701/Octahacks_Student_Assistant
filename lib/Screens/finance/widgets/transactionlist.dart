@@ -64,7 +64,7 @@ class TransactionList extends StatelessWidget {
                       child: Icon(Icons.delete),
                       onPressed: () {
                        //_deleteTransaction(transactions[index].id);
-                       _showMyDialog(context);
+                       _showMyDialog(context, _deleteTransaction, transactions[index].id);
                       },
                     ),
                   ),
@@ -80,18 +80,17 @@ class TransactionList extends StatelessWidget {
   }
 }
 
-Future<void> _showMyDialog(BuildContext context) async {
+Future<void> _showMyDialog(BuildContext context, _deleteTransaction, id) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('AlertDialog Title'),
+        title: Text('Confirm?'),
         content: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to confirm this message?'),
+              Text('Are you sure to delete this item?'),
             ],
           ),
         ),
@@ -99,7 +98,8 @@ Future<void> _showMyDialog(BuildContext context) async {
           TextButton(
             child: Text('Confirm'),
             onPressed: () {
-              print('Confirmed');
+              // print('Confirmed');
+              _deleteTransaction(id);
               Navigator.of(context).pop();
             },
           ),
