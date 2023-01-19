@@ -281,10 +281,11 @@ class _DetailsState extends State<Details> {
                               builder: (context) => HomeScreen(
                                   currentUser: _currentUser,
                                   userTransactions: _userTransactions,
-                                  userEvents:_userEvents)));
+                                  userEvents: _userEvents
+                                  )));
                       print(_currentUser);
                       print(_userTransactions);
-                      print(_userEvents);
+                      // print(_userEvents);
                     });
                   });
                 } else {

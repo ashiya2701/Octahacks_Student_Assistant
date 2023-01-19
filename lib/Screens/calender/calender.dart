@@ -11,14 +11,21 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import 'models/task.dart';
+
 // Future<void> main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
-  
+
 //   runApp(const MyApp());
 // }
 
 class Calender extends StatefulWidget {
-  const Calender({super.key});
+  List<Task> _userEvents = [];
+  Function _updateUserEvents;
+
+  Calender(this._userEvents, this._updateUserEvents) {
+    print(_userEvents);
+  }
 
   @override
   State<Calender> createState() => _CalenderState();
@@ -40,7 +47,6 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
       body: Column(
         children: [
           _addTaskBar(),
@@ -99,8 +105,14 @@ class _CalenderState extends State<Calender> {
         ),
         MyButton(
             label: "+ Add Task",
-            onTap: ()  {
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>AddTaskPage()) );
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddTaskPage(
+                            widget._updateUserEvents,
+                            widget._userEvents,
+                          )));
               _taskController.getTask();
             })
       ]),

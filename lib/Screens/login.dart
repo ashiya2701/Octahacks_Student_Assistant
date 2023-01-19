@@ -167,16 +167,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         id: doc.id,
                         title: doc['title']));
                   });
+                  List<Task> _userEvents = [];
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (coontext) => HomeScreen(
-                              currentUser: _currentUser,
-                              userTransactions: _userTransactions,
-                              userEvents: List<Task>)));
+                                currentUser: _currentUser,
+                                userTransactions: _userTransactions,
+                                userEvents: _userEvents,
+                              )));
                   print(_currentUser);
                   print(_userTransactions);
-                  
                 });
               } else {
                 print('Document does not exist on the database');

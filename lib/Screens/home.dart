@@ -47,6 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _updateUserEvents(List<Task> t) {
+    setState(() {
+       widget._userEvents = t;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // var args = ModalRoute.of(context)!.settings.arguments as List;
@@ -55,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<Widget> _sections = [
       FinanceScreen(widget._userTransactions, widget._currentUser,
           _updateCurrentUserBalance, _updateTransactionList),
-      Calender(),
+      Calender(widget._userEvents, _updateUserEvents),
       JobsScreen(widget._currentUser),
     ];
 
