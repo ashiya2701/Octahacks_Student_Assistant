@@ -140,19 +140,20 @@ class _DetailsState extends State<Details> {
                 hintText: 'Expected Graduation Year',
                 hintStyle: kHintTextStyle,
               ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(DateTime.now().year - 100, 1),
-                  lastDate: DateTime(DateTime.now().year + 100, 1),
-                );
-                if (pickedDate != null) {
-                  setState(() {
-                    _date.text = pickedDate.year.toString();
-                  });
-                }
-              }),
+                //onTap: () async {
+                // DateTime? pickedDate = await showDatePicker(
+                //   context: context,
+                //   initialDate: DateTime.now(),
+                //   firstDate: DateTime(DateTime.now().year - 100, 1),
+                //   lastDate: DateTime(DateTime.now().year + 100, 1),
+                // );
+                // if (pickedDate != null) {
+                //   setState(() {
+                //     _date.text = pickedDate.year.toString();
+                //   });
+                // }
+              //}
+              ),
         ),
       ],
     );
@@ -443,7 +444,8 @@ class _DetailsState extends State<Details> {
                       SizedBox(height: 30.0),
                       _buildTF('Major', 'Enter your Branch/Major', _branch),
                       SizedBox(height: 30.0),
-                      _buildGradYear(),
+                      //_buildGradYear(),
+                      _buildTF("Graduation Year", "Enter your Graduation Year", _date),
                       SizedBox(height: 30.0),
                       _buildCareers(),
                       SizedBox(height: 30.0),
