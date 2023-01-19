@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 import '../models/task.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
+  List<Task> _userEvents;
+  Function _updateUserEvents;
+  AddTaskPage(this._updateUserEvents, this._userEvents);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -41,7 +43,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Get.isDarkMode ? Colors.grey : Colors.white,
-      appBar: _appBar(context),
       body: Container(
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
@@ -220,7 +221,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   _validateData() {
     if (_titleController.text.isNotEmpty && _noteController.text.isNotEmpty) {
-      _addTaskToDb();
+      //call function to add to db
+      widget._userEvents.add(Task(
+        id: DateTime.now().toString(),
+        note: _noteController.text,
+        title: _titleController.text,
+        date: DateFormat.yMd().format(_selectedDate),
+        startTime: _startTime,
+        endTime: _endTime,
+        remind: _selectedRemind,
+        repeat: _selectedRepeat,
+        color: _selectedColor,
+        isCompleted: 0,
+      ));
+      widget._updateUserEvents(widget._userEvents);
+
       Navigator.pop(context);
     } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
       Get.snackbar("Required", "All fields are required!",
@@ -234,45 +249,45 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  _addTaskToDb() async {
-    int value = await TaskController.addTask(
-        task: Task(
-      note: _noteController.text,
-      title: _titleController.text,
-      date: DateFormat.yMd().format(_selectedDate),
-      startTime: _startTime,
-      endTime: _endTime,
-      remind: _selectedRemind,
-      repeat: _selectedRepeat,
-      color: _selectedColor,
-      isCompleted: 0,
-    ));
-    print("My id is " + "$value");
-  }
+  // _addTaskToDb() async {
+  //   int value = await TaskController.addTask(
+  //       task: Task(
+  //     note: _noteController.text,
+  //     title: _titleController.text,
+  //     date: DateFormat.yMd().format(_selectedDate),
+  //     startTime: _startTime,
+  //     endTime: _endTime,
+  //     remind: _selectedRemind,
+  //     repeat: _selectedRepeat,
+  //     color: _selectedColor,
+  //     isCompleted: 0,
+  //   ));
+  //   print("My id is " + "$value");
+  // }
 
-  _appBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: context.theme.backgroundColor,
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back,
-          size: 20,
-          color: Get.isDarkMode ? Colors.white : Colors.black,
-        ),
-      ),
-      actions: [
-        CircleAvatar(
-          backgroundImage: AssetImage("images/download.png"),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-      ],
-    );
-  }
+  // _appBar(BuildContext context) {
+  //   return AppBar(
+  //     backgroundColor: context.theme.backgroundColor,
+  //     leading: GestureDetector(
+  //       onTap: () {
+  //         Navigator.pop(context);
+  //       },
+  //       child: Icon(
+  //         Icons.arrow_back,
+  //         size: 20,
+  //         color: Get.isDarkMode ? Colors.white : Colors.black,
+  //       ),
+  //     ),
+  //     actions: [
+  //       CircleAvatar(
+  //         backgroundImage: AssetImage("images/download.png"),
+  //       ),
+  //       SizedBox(
+  //         width: 20,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _getDateFromUser() async {
     DateTime? _pickerDate = await showDatePicker(

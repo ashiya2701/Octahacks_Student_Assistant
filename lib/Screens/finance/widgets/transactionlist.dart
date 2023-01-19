@@ -60,8 +60,9 @@ class TransactionList extends StatelessWidget {
                     child: ElevatedButton(
                       child: Icon(Icons.delete),
                       onPressed: () {
-                       //_deleteTransaction(transactions[index].id);
-                       _showMyDialog(context, _deleteTransaction, transactions[index].id);
+                        //_deleteTransaction(transactions[index].id);
+                        _showMyDialog(context, _deleteTransaction,
+                            transactions[index].id);
                       },
                     ),
                   ),
