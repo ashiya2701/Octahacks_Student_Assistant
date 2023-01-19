@@ -167,17 +167,46 @@ class _LoginScreenState extends State<LoginScreen> {
                         id: doc.id,
                         title: doc['title']));
                   });
-                  List<Task> _userEvents = [];
-                  Navigator.pushReplacement(
+
+                 
+
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                      .collection('tasks')
+                      .get()
+                      .then((QuerySnapshot qs) {
+ List<Task> _userEvents= [];
+                  qs.docs.forEach((doc) {
+                    _userEvents.add(Task(
+                       id: doc.id,
+                       title: doc["title"],
+                       note: doc["note"],
+                       isCompleted: doc["isCompleted"],
+                       date: doc["date"],
+                       startTime: doc["startTime"],
+                       endTime: doc["endTime"],
+                       color: doc["color"],
+                       remind: doc["remind"],
+                       repeat: doc["repeat"],
+
+                        ));
+                  });
+
+                        
+                         Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (coontext) => HomeScreen(
+                          builder: (context) => HomeScreen(
                                 currentUser: _currentUser,
                                 userTransactions: _userTransactions,
                                 userEvents: _userEvents,
                               )));
                   print(_currentUser);
                   print(_userTransactions);
+
+
+                      });
                 });
               } else {
                 print('Document does not exist on the database');

@@ -24,7 +24,9 @@ class Calender extends StatefulWidget {
   Function _updateUserEvents;
 
   Calender(this._userEvents, this._updateUserEvents) {
-    print(_userEvents);
+    for (Task e in _userEvents) {
+      print(e.toJson());
+    }
   }
 
   @override

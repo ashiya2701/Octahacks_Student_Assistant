@@ -51,6 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
        widget._userEvents = t;
     });
+
+       
+    
+
   }
 
   @override
