@@ -56,37 +56,41 @@ class _CalenderState extends State<Calender> {
           SizedBox(
             height: 10,
           ),
-          _showTasks(),
+          _showTasks(widget._userEvents),
         ],
       ),
     );
   }
 
-  _showTasks() {
-    return Expanded(
-      child: Obx(() {
-        return ListView.builder(
-            itemCount: _taskController.taskList.length,
-            itemBuilder: (_, index) {
-              print(_taskController.taskList.length);
-              return GestureDetector(
-                onTap: () {
-                  _taskController.delete(_taskController.taskList[index]);
-                },
-                child: Container(
-                  width: 100,
-                  height: 50,
-                  color: Colors.green,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    _taskController.taskList[index].title.toString(),
-                  ),
-                ),
-              );
-            });
-      }),
-    );
-  }
+_showTasks(List<Task> _userEvents){
+  
+}
+
+// _showTasks(List<Task> _userEvents) {
+//     return Expanded(
+//       child: Obx(() {
+//         return ListView.builder(
+//             itemCount: _userEvents.length,
+//             itemBuilder: (_, index) {
+//               print(_userEvents.length);
+//               return GestureDetector(
+//                 onTap: () {
+//                   // _taskController.delete(_taskController.taskList[index]);
+//                 },
+//                 child: Container(
+//                   width: 100,
+//                   height: 50,
+//                   color: Colors.green,
+//                   margin: const EdgeInsets.only(bottom: 10),
+//                   child: Text(
+//                     _userEvents[index].title.toString(),
+//                   ),
+//                 ),
+//               );
+//             });
+//       }),
+//     );
+//   }
 
   _addTaskBar() {
     return Container(
