@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
-// import 'package:path/path.dart';
-
+import 'package:path/path.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -62,8 +60,9 @@ class TransactionList extends StatelessWidget {
                     child: ElevatedButton(
                       child: Icon(Icons.delete),
                       onPressed: () {
-                       //_deleteTransaction(transactions[index].id);
-                       _showMyDialog(context, _deleteTransaction, transactions[index].id);
+                        //_deleteTransaction(transactions[index].id);
+                        _showMyDialog(context, _deleteTransaction,
+                            transactions[index].id);
                       },
                     ),
                   ),

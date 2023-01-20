@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../UI/theme.dart';
 import '../UI/widgets/button.dart';
 import '../UI/widgets/input_field.dart';
@@ -9,7 +12,9 @@ import 'package:intl/intl.dart';
 import '../models/task.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
+  List<Task> _userEvents;
+  Function _updateUserEvents;
+  AddTaskPage(this._updateUserEvents, this._userEvents);
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -19,6 +24,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TaskController _taskController = Get.put(TaskController());
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  final _isCompleted = 0;
   DateTime _selectedDate = DateTime.now();
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
   String _endTime = "9:30 PM";
@@ -41,7 +47,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Get.isDarkMode ? Colors.grey : Colors.white,
-      appBar: _appBar(context),
       body: Container(
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: SingleChildScrollView(
@@ -220,8 +225,54 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   _validateData() {
     if (_titleController.text.isNotEmpty && _noteController.text.isNotEmpty) {
-      _addTaskToDb();
-      Navigator.pop(context);
+      //call function to add to db
+      print("Creating task");
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('tasks')
+          .add({
+        'note': _noteController.text,
+        'title': _titleController.text,
+        'date': DateFormat.yMd().format(_selectedDate),
+        'startTime': _startTime,
+        'endTime': _endTime,
+        'remind': _selectedRemind,
+        'repeat': _selectedRepeat,
+        'color': _selectedColor,
+        'isCompleted': _isCompleted,
+      }).then((value) {
+        print("Added to db");
+        List<Task> tx = [];
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser?.uid)
+            .collection('tasks')
+            .get()
+            .then((QuerySnapshot qs) {
+          print("fetching from db");
+          qs.docs.forEach((doc) {
+            print(doc.id);
+            tx.add(Task(
+              id: doc.id,
+              title: doc['title'],
+              note: doc['note'],
+              isCompleted: doc['isCompleted'],
+              date: doc['date'],
+              startTime: doc['startTime'],
+              endTime: doc['endTime'],
+              color: doc['color'],
+              remind: doc['remind'],
+              repeat: doc['repeat'],
+            ));
+            print(tx);
+          });
+
+          widget._updateUserEvents(tx);
+        });
+
+        Navigator.pop(context);
+      });
     } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
       Get.snackbar("Required", "All fields are required!",
           snackPosition: SnackPosition.BOTTOM,
@@ -234,45 +285,45 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
 
-  _addTaskToDb() async {
-    int value = await TaskController.addTask(
-        task: Task(
-      note: _noteController.text,
-      title: _titleController.text,
-      date: DateFormat.yMd().format(_selectedDate),
-      startTime: _startTime,
-      endTime: _endTime,
-      remind: _selectedRemind,
-      repeat: _selectedRepeat,
-      color: _selectedColor,
-      isCompleted: 0,
-    ));
-    print("My id is " + "$value");
-  }
+  // _addTaskToDb() async {
+  //   int value = await TaskController.addTask(
+  //       task: Task(
+  //     note: _noteController.text,
+  //     title: _titleController.text,
+  //     date: DateFormat.yMd().format(_selectedDate),
+  //     startTime: _startTime,
+  //     endTime: _endTime,
+  //     remind: _selectedRemind,
+  //     repeat: _selectedRepeat,
+  //     color: _selectedColor,
+  //     isCompleted: 0,
+  //   ));
+  //   print("My id is " + "$value");
+  // }
 
-  _appBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: context.theme.backgroundColor,
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back,
-          size: 20,
-          color: Get.isDarkMode ? Colors.white : Colors.black,
-        ),
-      ),
-      actions: [
-        CircleAvatar(
-          backgroundImage: AssetImage("images/download.png"),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-      ],
-    );
-  }
+  // _appBar(BuildContext context) {
+  //   return AppBar(
+  //     backgroundColor: context.theme.backgroundColor,
+  //     leading: GestureDetector(
+  //       onTap: () {
+  //         Navigator.pop(context);
+  //       },
+  //       child: Icon(
+  //         Icons.arrow_back,
+  //         size: 20,
+  //         color: Get.isDarkMode ? Colors.white : Colors.black,
+  //       ),
+  //     ),
+  //     actions: [
+  //       CircleAvatar(
+  //         backgroundImage: AssetImage("images/download.png"),
+  //       ),
+  //       SizedBox(
+  //         width: 20,
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _getDateFromUser() async {
     DateTime? _pickerDate = await showDatePicker(
