@@ -88,19 +88,20 @@ class _CalenderState extends State<Calender> {
               }),
         ),
         SizedBox(
-          height: 150,
+          height: 300,
           child: ListView.builder(
             itemCount: widget._userEvents.length,
             itemBuilder: (BuildContext context, index) {
               return Card(
-                color: Colors.cyan,
+                color: Colors.blue[200],
                 child: Column(
                   children: [
-                    Text(widget._userEvents[index].title.toString()),
+                    Text(widget._userEvents[index].title.toString(), style: TextStyle(fontWeight: FontWeight.w700),),
                     Text(widget._userEvents[index].date.toString()),
                     Text(widget._userEvents[index].startTime.toString() +
+                      " - " +
                         widget._userEvents[index].endTime.toString()),
-                    Text(widget._userEvents[index].note.toString()),
+                    Text(widget._userEvents[index].note.toString(), style: TextStyle(fontStyle: FontStyle.italic),),
                   ],
                 ),
               );
