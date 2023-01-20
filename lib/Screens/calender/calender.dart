@@ -54,7 +54,7 @@ class _CalenderState extends State<Calender> {
           _addTaskBar(),
           _addDateBar(),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           _showTasks(),
         ],
@@ -63,28 +63,51 @@ class _CalenderState extends State<Calender> {
   }
 
   _showTasks() {
-    return Expanded(
-      child: Obx(() {
-        return ListView.builder(
-            itemCount: _taskController.taskList.length,
-            itemBuilder: (_, index) {
-              print(_taskController.taskList.length);
-              return GestureDetector(
-                onTap: () {
-                  _taskController.delete(_taskController.taskList[index]);
-                },
-                child: Container(
-                  width: 100,
-                  height: 50,
-                  color: Colors.green,
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    _taskController.taskList[index].title.toString(),
+    return Column(
+      children: [
+        SizedBox(
+          height: 80,
+          child: ListView.builder(
+              itemCount: _taskController.taskList.length,
+              itemBuilder: (_, index) {
+                print(_taskController.taskList.length);
+                return GestureDetector(
+                  onTap: () {
+                    _taskController.delete(_taskController.taskList[index]);
+                  },
+                  child: Container(
+                    width: 150,
+                    height: 50,
+                    color: Colors.green,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      _taskController.taskList[index].title.toString(),
+                    ),
                   ),
+                );
+              }),
+        ),
+        SizedBox(
+          height: 150,
+          child: ListView.builder(
+            itemCount: widget._userEvents.length,
+            itemBuilder: (BuildContext context, index) {
+              return Card(
+                color: Colors.cyan,
+                child: Column(
+                  children: [
+                    Text(widget._userEvents[index].title.toString()),
+                    Text(widget._userEvents[index].date.toString()),
+                    Text(widget._userEvents[index].startTime.toString() +
+                        widget._userEvents[index].endTime.toString()),
+                    Text(widget._userEvents[index].note.toString()),
+                  ],
                 ),
               );
-            });
-      }),
+            },
+          ),
+        )
+      ],
     );
   }
 
