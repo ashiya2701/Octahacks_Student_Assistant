@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:student_assistant_app/Screens/calender/profile/prof.dart';
 
 class MainDrawer extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -46,7 +47,12 @@ class MainDrawer extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.man, size: 26),
               title: Text("Profile"),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Profile(_currentUser)));
+              },
             ))
       ]),
     );
