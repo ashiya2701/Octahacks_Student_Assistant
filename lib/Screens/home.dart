@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_assistant_app/Screens/calender/calender.dart';
 import 'package:student_assistant_app/Screens/finance/finance.dart';
-import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.dart';
+// import 'package:student_assistant_app/Screens/finance/widgets/user_transaction.dart';
 import 'package:student_assistant_app/Screens/jobs/jobs.dart';
 import 'package:student_assistant_app/Screens/login.dart';
 import 'package:student_assistant_app/Screens/maindrawer.dart';

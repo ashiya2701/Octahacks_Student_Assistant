@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Login UI',
+      title: 'Student Assistant',
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
       routes: {
