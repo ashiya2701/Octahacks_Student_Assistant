@@ -19,7 +19,7 @@ class _BalanceWidgetState extends State<BalanceWidget> {
         child: Row(
           children: [
             Text(
-              'Current Balance : ${widget._currentBalance}',
+              'Current Balance :Rs ${widget._currentBalance}',
               style: TextStyle(fontSize: 15),
             ),
             BalanceAdder(widget.increaseBalance)
