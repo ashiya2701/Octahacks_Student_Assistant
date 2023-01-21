@@ -14,19 +14,14 @@ class MainDrawer extends StatelessWidget {
     return Drawer(
       child: Column(children: [
         Container(
-          height: 120,
+          height: 130,
           width: double.infinity,
           padding: EdgeInsets.all(20),
           alignment: Alignment.centerLeft,
-          child: Text('Hello, ${_currentUser?['Name']}'),
+          child: Text('Hello, ${_currentUser?['Name']}', style: TextStyle(fontSize: 20),),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        // ListTile(
-        //   leading: Icon(Icons.settings, size: 26),
-        //   title: Text('Settings'),
-        //   onTap: () {},
+        // SizedBox(
+        //   height: 5,
         // ),
         Theme(
           data: ThemeData(
