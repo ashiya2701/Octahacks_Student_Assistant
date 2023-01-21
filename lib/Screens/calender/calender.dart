@@ -88,7 +88,7 @@ class _CalenderState extends State<Calender> {
               }),
         ),
         SizedBox(
-          height: 300,
+          height: 363,
           child: ListView.builder(
             itemCount: widget._userEvents.length,
             itemBuilder: (BuildContext context, index) {
